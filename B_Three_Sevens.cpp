@@ -46,41 +46,40 @@ void solve()
     cin>>n;
     vector<int> v[n];
     int k = 0;
-    unordered_map<int,int> last;
+    unordered_map<int,int> mp;
     while(k<n){
         int x;
         cin>>x;
         for(int i =0;i<x;i++){
-            int t;
-            cin>>t;
-            last[t] = k;
+            int temp;
+            cin>>temp;
+            v[k].push_back(temp);
+            mp[temp]++;
         }
         k++;
     }
-    unordered_map<int,vector<int>> mp;
-    for(auto it : last){
-        mp[it.second].push_back(it.first);
-    }
-    
     vector<int> ans;
-    int f = 0;
-    for(int i =0;i<n;i++){
-        if(mp[i].size() == 0){
-            f = 1;
-            break;
+    set<int> st;
+    for(int i =n-1;i>=0;i--){
+        for(auto it: v[i]){
+            if(st.find(it) == st.end()){
+                ans.push_back(it);
+                break;
+            }
         }
-        else{
-            ans.push_back(mp[i][0]);
+        for(auto it: v[i]){
+            st.insert(it);
         }
     }
-    if(f == 1){
-        cout<<-1<<endl;
-    }
-    else{
+    if(ans.size() == n){
+        reverse(ans.begin(),ans.end());
         for(auto it : ans){
             cout<<it<<" ";
         }
         cout<<endl;
+    }
+    else{
+        cout<<-1<<endl;
     }
 }
 int main(){
